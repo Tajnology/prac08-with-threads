@@ -1,11 +1,10 @@
 package networkExercise;
 
-import common.AddressBookDataSource;
-import common.Person;
+import networkExercise.common.AddressBookDataSource;
+import networkExercise.common.Person;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,11 +36,11 @@ public class NetworkDataSource implements AddressBookDataSource {
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            // If the server connection fails, we're going to throw exceptions
+            // If the networkExercise.server connection fails, we're going to throw exceptions
             // whenever the application actually tries to query anything.
             // But it wasn't written to handle this, so make sure your
-            // server is running beforehand!
-            System.out.println("Failed to connect to server");
+            // networkExercise.server is running beforehand!
+            System.out.println("Failed to connect to networkExercise.server");
         }
     }
 
@@ -51,7 +50,7 @@ public class NetworkDataSource implements AddressBookDataSource {
             throw new IllegalArgumentException("Person cannot be null");
 
         try {
-            // tell the server to expect a person's details
+            // tell the networkExercise.server to expect a person's details
             outputStream.writeObject(Command.ADD_PERSON);
 
             // send the actual data
@@ -65,14 +64,14 @@ public class NetworkDataSource implements AddressBookDataSource {
     @Override
     public Person getPerson(String name) {
         try {
-            // tell the server to expect a person's name, and send us back their details
+            // tell the networkExercise.server to expect a person's name, and send us back their details
             outputStream.writeObject(Command.GET_PERSON);
             outputStream.writeObject(name);
 
             // flush because if we don't, the request might not get sent yet, and we're waiting for a response
             outputStream.flush();
 
-            // read the person's details back from the server
+            // read the person's details back from the networkExercise.server
             return (Person)inputStream.readObject();
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             e.printStackTrace();
@@ -94,7 +93,7 @@ public class NetworkDataSource implements AddressBookDataSource {
             outputStream.writeObject(Command.GET_SIZE);
             outputStream.flush();
 
-            // read the person's details back from the server
+            // read the person's details back from the networkExercise.server
             return inputStream.readInt();
         } catch (IOException | ClassCastException e) {
             e.printStackTrace();

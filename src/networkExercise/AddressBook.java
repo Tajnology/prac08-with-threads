@@ -1,5 +1,5 @@
 package networkExercise;
-import common.*;
+import networkExercise.common.*;
 import javax.swing.*;
 
 /**
